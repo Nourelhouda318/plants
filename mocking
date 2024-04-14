@@ -1,0 +1,67 @@
+// Mocking the document object
+const document = {
+    addEventListener: jest.fn(),
+    querySelector: jest.fn(() => ({
+        addEventListener: jest.fn()
+    })),
+    createElement: jest.fn(() => ({
+        click: jest.fn()
+    })),
+    getElementById: jest.fn(() => ({
+        addEventListener: jest.fn()
+    })),
+};
+
+// Mocking the alert function
+global.alert = jest.fn();
+
+// Importing the JavaScript code
+const jsCode = require('./js.js');
+
+describe('Test HTML Mocks', () => {
+    it('should add event listener for logo click', () => {
+        // Simulating DOMContentLoaded event
+        document.addEventListener.mock.calls[0][1]();
+
+        // Checking if the event listener is added for logo click
+        expect(document.querySelector).toHaveBeenCalledWith('.logo a');
+        expect(document.querySelector().addEventListener).toHaveBeenCalledWith('click', expect.any(Function));
+
+        // Simulating click on the logo
+        document.querySelector().addEventListener.mock.calls[0][1]();
+
+        // Checking if the alert message is displayed
+        expect(global.alert).toHaveBeenCalledWith('Vous avez cliqué sur le logo PLANTY.');
+    });
+
+    it('should add event listener for search button click', () => {
+        // Simulating DOMContentLoaded event
+        document.addEventListener.mock.calls[0][1]();
+
+        // Checking if the event listener is added for search button click
+        expect(document.querySelector).toHaveBeenCalledWith('.search-box');
+        expect(document.querySelector().addEventListener).toHaveBeenCalledWith('click', expect.any(Function));
+
+        // Simulating click on the search button
+        document.querySelector().addEventListener.mock.calls[0][1]();
+
+        // Checking if the search function is called
+        expect(document.createElement).toHaveBeenCalledWith('input');
+        expect(document.createElement().click).toHaveBeenCalled();
+    });
+
+    it('should add event listener for footer link click', () => {
+        // Simulating DOMContentLoaded event
+        document.addEventListener.mock.calls[0][1]();
+
+        // Checking if the event listener is added for footer link click
+        expect(document.getElementById).toHaveBeenCalledWith('footer');
+        expect(document.getElementById().addEventListener).toHaveBeenCalledWith('click', expect.any(Function));
+
+        // Simulating click on a footer link
+        document.getElementById().addEventListener.mock.calls[0][1]();
+
+        // Checking if the alert message is displayed
+        expect(global.alert).toHaveBeenCalledWith('Footer link clicked');
+    });
+});
