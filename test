@@ -1,3 +1,7 @@
+const { JSDOM } = require('jsdom');
+
+// Mock the HTML structure
+const htmlMock = `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,65 +9,67 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PLANTY</title>
     <link rel="stylesheet" href="backup.css">
-    <script>
-        // JavaScript code
-        document.addEventListener("DOMContentLoaded", function() {
-            // Fonction pour afficher un message d'alerte lorsque le logo est cliqué
-            document.querySelector(".logo a").addEventListener("click", function() {
-                alert("Vous avez cliqué sur le logo PLANTY.");
-            });
-        });
-    </script>
 </head>
 <body>
     <header>
        <div class="logo"><a href="index.html">PLANTY.</a></div>
        
        <div class="navbar">
-         <ul>
-             <li><a href="index.html">Home</a></li>
-             <li><a href="plants.html">Plants</a></li>
-             <li><a href="Pots.html">Pots</a></li>
-             <li><a href="plantcare.html">Plant Care</a></li>
-             <li class="active"><a href="aboutus.html">About Us</a></li>
-             <li><a href="contact.html">Contact</a></li> 
+         <ul >
+                 <li > <a href="index.html">Home</a></li>
+                 <li class="active" > <a href="plants.html">Plants</a></li>
+                 <li > <a href="Pots.html">Pots</a></li>
+                 <li > <a href="plantcare.html">Plant Care</a></li>
+                 <li > <a href="aboutus.html">About Us</a></li>
+                 <li > <a href="contact.html">Contact</a></li> 
          </ul>
        </div>
        <input type="text" placeholder="  Search" class="search-box">
        <div class="bag"><a href="#"><img src="Icons/purchase.ico" id="bag"></a></div>
-       <div class="acc"><a href="acc.html"><img src="Icons/account.ico" id="acc"></a></div>
+       <div class="acc"><a href="#"><img src="Icons/account.ico" id="acc"></a></div>
     </header>
-    
-    <table width="100%">
+    <table width="100%" >
       <tr>
-        <td><img src="design-pages/us.png" width="100%"></td>
+        <td ><img src="design-pages/3-shop-img.png" width="100%"></td>
       </tr>
     </table>
-    
     <footer>
-        <div class="footer-list">
-          <ul>
-            <li><a href="plants.html">Plants</a></li>
-            <li><a href="pots.html">Pots</a></li>
-            <li><a href="plantcare.html">Plant care</a></li>
-            <li><a href="aboutus.html">About us</a></li>
-            <li><a href="contact.html">Contact</a></li>
-          </ul>
-        </div>
-        <div class="footer-list">
-          <ul>
-            <li><a href="account.html">Account</a></li>
-            <li><a href="cart.html">Shopping Cart</a></li>
-          </ul>
-        </div>
-        <div class="footer-list">
-          <ul>
-            <li><a href="https://Facebook.com">Facebook</a></li>
-            <li><a href="https://Instagram.com">Instagram</a></li>
-            <li><a href="https://YouTube.com">YouTube</a></li>
-            <li><a href="https://Twitter.com">Twitter</a></li>
-          </ul>
-        </div>
+      <div class="footer-list">
+        <ul>
+          <li><a href="#">Plants</a></li>
+          <li><a href="#">Pots</a></li>
+          <li><a href="#">Plant care</a></li>
+          <li><a href="#">About us</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-list">
+        <ul>
+          <li><a href="#">Account</a></li>
+          <li><a href="#">Shopping Cart</a></li>
+        </ul>
+      </div>
+      <div class="footer-list">
+        <ul>
+          <li><a href="#">Facebook</a></li>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">YouTube</a></li>
+          <li><a href="#">Twitter</a></li>
+        </ul>
+      </div>
     </footer>
 </body>
 </html>
+`;
+
+// Create a mock DOM environment
+const dom = new JSDOM(htmlMock, { runScripts: 'dangerously' });
+
+// Extract the window and document objects
+global.window = dom.window;
+global.document = dom.window.document;
+
+// Optionally, you can also set up mocks for other global objects/functions like alert()
+global.alert = jest.fn();
+
+// Now, you can run your tests or interact with the mocked DOM
